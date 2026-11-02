@@ -1,0 +1,13 @@
+<view class="container">
+  <view wx:if="{{!records.length}}" class="empty label">暂无记录</view>
+  <view class="card" wx:for="{{records}}" wx:key="id">
+    <view class="row">
+      <text class="name">{{item.name}}</text>
+      <text class="label">{{item.timeText}}</text>
+    </view>
+    <view class="row">
+      <text>{{item.count}}D6  {{item.valuesText}}</text>
+      <text>总和 <text class="total">{{item.total}}</text></text>
+    </view>
+  </view>
+</view>

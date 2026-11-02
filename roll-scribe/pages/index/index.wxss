@@ -1,0 +1,165 @@
+.container {
+  padding: 32rpx 32rpx 180rpx;
+}
+
+.name-input {
+  margin-top: 16rpx;
+  height: 88rpx;
+  background: #ffffff;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+}
+
+.stepper.big {
+  margin-top: 20rpx;
+  justify-content: space-between;
+}
+
+.step-btn {
+  width: 80rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 40rpx;
+  border-radius: 12rpx;
+  background: #5b6b7f;
+  color: #ffffff;
+}
+
+.stepper.big .step-btn {
+  width: 120rpx;
+  height: 120rpx;
+  line-height: 120rpx;
+  font-size: 56rpx;
+}
+
+.step-btn.disabled {
+  opacity: 0.4;
+}
+
+.step-value {
+  min-width: 120rpx;
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.stepper.big .step-value {
+  font-size: 72rpx;
+}
+
+.primary-btn {
+  height: 112rpx;
+  line-height: 112rpx;
+  font-size: 36rpx;
+  background: #5b6b7f !important;
+  color: #ffffff !important;
+  border-radius: 16rpx;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.link {
+  color: #5b6b7f;
+  font-size: 28rpx;
+}
+
+.stage {
+  padding: 0;
+  overflow: hidden;
+}
+
+.dice-canvas {
+  width: 100%;
+  height: 440rpx;
+}
+
+.result-line {
+  padding: 20rpx 28rpx 28rpx;
+  min-height: 100rpx;
+}
+
+.result-name {
+  font-weight: 600;
+}
+
+.total-num {
+  font-size: 48rpx;
+  font-weight: 600;
+}
+
+.player-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.player-btn {
+  box-sizing: border-box;
+  width: calc(50% - 12rpx);
+  height: 200rpx;
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+  border-radius: 20rpx;
+  background: #5b6b7f;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-btn.full {
+  width: 100%;
+}
+
+.player-btn:active {
+  background: #4a596b;
+}
+
+.player-btn.disabled {
+  opacity: 0.5;
+}
+
+.player-btn.active {
+  opacity: 1;
+  background: #3f4d5e;
+}
+
+.player-name {
+  font-size: 40rpx;
+  font-weight: 600;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-last {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  opacity: 0.8;
+}
+
+.history-entry {
+  position: fixed;
+  left: 32rpx;
+  right: 32rpx;
+  bottom: calc(32rpx + env(safe-area-inset-bottom));
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  border: 2rpx solid #5b6b7f;
+  border-radius: 12rpx;
+  color: #5b6b7f;
+  background: #ffffff;
+}

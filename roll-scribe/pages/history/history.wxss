@@ -1,0 +1,27 @@
+.container {
+  padding: 32rpx;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row + .row {
+  margin-top: 12rpx;
+}
+
+.name {
+  font-weight: 600;
+}
+
+.total {
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.empty {
+  text-align: center;
+  padding-top: 200rpx;
+}
