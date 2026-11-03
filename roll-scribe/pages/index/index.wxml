@@ -1,4 +1,4 @@
-<view class="container">
+<view class="container {{stage === 'play' ? 'play-container' : ''}}">
   <!-- 第一步：设置人数和昵称 -->
   <block wx:if="{{stage === 'setup'}}">
     <view class="card">
@@ -42,26 +42,76 @@
     <view class="stage card">
       <canvas type="webgl" id="dice3d" class="dice-canvas"></canvas>
       <view class="result-line">
-        <block wx:if="{{rollingName}}">{{rollingName}} 投掷中…</block>
-        <block wx:elif="{{result}}">
-          <text class="result-name">{{result.name}}</text>
-          <text class="label"> {{result.count}}D6 [{{result.valuesText}}] · {{result.timeText}}</text>
-          <view>总和：<text class="total-num">{{result.total}}</text></view>
-        </block>
-        <block wx:else><text class="label">点击下方玩家按钮投掷</text></block>
+        <view class="result-info">
+          <block wx:if="{{rollingName}}">{{rollingName}} 投掷中…</block>
+          <block wx:elif="{{result}}">
+            <text class="result-name">{{result.name}}</text>
+            <text class="label"> {{result.count}}D6 [{{result.valuesText}}] · {{result.timeText}}</text>
+          </block>
+          <block wx:else><text class="label">点击下方玩家按钮投掷</text></block>
+        </view>
+        <view class="result-total {{!result || rollingName ? 'result-placeholder' : ''}}">总和：<text class="total-num">{{result ? result.total : '—'}}</text></view>
       </view>
     </view>
 
     <view class="player-grid">
       <view
-        class="player-btn {{players.length === 1 ? 'full' : ''}} {{rollingName ? 'disabled' : ''}} {{rollingName === item.name ? 'active' : ''}}"
+        class="player-card {{players.length === 1 ? 'full' : ''}}"
         wx:for="{{players}}"
+        wx:for-item="player"
+        wx:for-index="playerIndex"
         wx:key="name"
-        data-name="{{item.name}}"
-        bindtap="onRoll"
       >
-        <view class="player-name">{{item.name}}</view>
-        <view class="player-last">{{item.last || '点击投掷'}}</view>
+        <view
+          class="player-btn {{rollingName ? 'disabled' : ''}} {{rollingName === player.name ? 'active' : ''}}"
+          data-name="{{player.name}}"
+          bindtap="onRoll"
+        >
+          <view class="player-name">{{player.name}}</view>
+          <view class="player-last">{{player.last || '点击投掷'}}</view>
+        </view>
+        <view class="player-counters">
+          <view class="counter" wx:for="{{player.counters}}" wx:for-item="counter" wx:key="id">
+            <view class="counter-header">
+              <input
+                class="counter-name"
+                value="{{counter.name}}"
+                placeholder="计数{{counter.id}}"
+                maxlength="20"
+                data-player-index="{{playerIndex}}"
+                data-counter-id="{{counter.id}}"
+                bindinput="onCounterNameInput"
+                bindblur="onCounterNameBlur"
+              />
+              <button
+                wx:if="{{player.counters.length > 1}}"
+                class="counter-delete"
+                data-player-index="{{playerIndex}}"
+                data-counter-id="{{counter.id}}"
+                bindtap="removeCounter"
+              >删除</button>
+            </view>
+            <view class="counter-stepper">
+              <button
+                class="counter-step"
+                disabled="{{counter.value === 0}}"
+                data-player-index="{{playerIndex}}"
+                data-counter-id="{{counter.id}}"
+                data-delta="-1"
+                bindtap="changeCounter"
+              >−</button>
+              <view class="counter-value">{{counter.value}}</view>
+              <button
+                class="counter-step"
+                data-player-index="{{playerIndex}}"
+                data-counter-id="{{counter.id}}"
+                data-delta="1"
+                bindtap="changeCounter"
+              >+</button>
+            </view>
+          </view>
+          <button class="counter-add" data-player-index="{{playerIndex}}" bindtap="addCounter">+ 新增计数框</button>
+        </view>
       </view>
     </view>
 

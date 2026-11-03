@@ -24,7 +24,7 @@ Page({
     stage: 'setup', // setup | play
     playerCount: 2,
     names: ['', ''],
-    players: [], // [{ name, last }]
+    players: [], // [{ name, last, counters, nextCounterId }]
     count: 1,
     minCount: MIN_COUNT,
     maxCount: MAX_COUNT,
@@ -86,8 +86,74 @@ Page({
   enterPlay(names) {
     this.setData({
       stage: 'play',
-      players: names.map((name) => ({ name, last: '' })),
+      players: names.map((name) => ({
+        name,
+        last: '',
+        counters: [{ id: 1, name: '计数1', value: 0 }],
+        nextCounterId: 2,
+      })),
     }, () => this.initScene())
+  },
+
+  // ---------- 玩家计数 ----------
+  addCounter(e) {
+    const { playerIndex } = e.currentTarget.dataset
+    const player = this.data.players[playerIndex]
+    if (!player) return
+    const id = player.nextCounterId
+    this.setData({
+      [`players[${playerIndex}].counters`]: player.counters.concat({
+        id, name: `计数${id}`, value: 0,
+      }),
+      [`players[${playerIndex}].nextCounterId`]: id + 1,
+    })
+  },
+
+  getCounterTarget(e) {
+    const { playerIndex, counterId } = e.currentTarget.dataset
+    const player = this.data.players[playerIndex]
+    if (!player) return null
+    const counterIndex = player.counters.findIndex((counter) => counter.id === Number(counterId))
+    if (counterIndex < 0) return null
+    return {
+      player,
+      counter: player.counters[counterIndex],
+      path: `players[${playerIndex}].counters[${counterIndex}]`,
+      playerIndex,
+    }
+  },
+
+  changeCounter(e) {
+    const target = this.getCounterTarget(e)
+    if (!target) return
+    const delta = Number(e.currentTarget.dataset.delta)
+    if (delta !== 1 && delta !== -1) return
+    const value = Math.max(0, target.counter.value + delta)
+    if (!Number.isSafeInteger(value)) return
+    this.setData({ [`${target.path}.value`]: value })
+  },
+
+  onCounterNameInput(e) {
+    const target = this.getCounterTarget(e)
+    if (!target) return
+    this.setData({ [`${target.path}.name`]: e.detail.value.slice(0, 20) })
+  },
+
+  onCounterNameBlur(e) {
+    const target = this.getCounterTarget(e)
+    if (!target) return
+    const name = e.detail.value.slice(0, 20).trim() || `计数${target.counter.id}`
+    this.setData({ [`${target.path}.name`]: name })
+  },
+
+  removeCounter(e) {
+    const target = this.getCounterTarget(e)
+    if (!target || target.player.counters.length <= 1) return
+    this.setData({
+      [`players[${target.playerIndex}].counters`]: target.player.counters.filter(
+        (counter) => counter.id !== target.counter.id,
+      ),
+    })
   },
 
   // ---------- 3D 场景 ----------
